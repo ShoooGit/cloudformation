@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 'Private Subnet for nesting'
+
+Parameters:
+  AZ:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: ap-northeast-1a
+  TagName:
+    Type: String
+    Default: "Private Subnet for nesting"
+  VPC:
+    Type: AWS::EC2::VPC::Id
+
+Resources:
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties: 
+      AvailabilityZone: !Ref AZ
+      VpcId: !Ref VPC
+      CidrBlock: 10.1.1.0/24
+      Tags:
+        - Key: Name
+          Value: !Ref TagName
+  RouteTable: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Ref TagName
+  RouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PrivateSubnet
+      RouteTableId: !Ref RouteTable
+
+Outputs:
+  SubnetID: 
+    Value: !Ref PrivateSubnet
