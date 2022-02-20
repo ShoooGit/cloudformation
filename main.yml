@@ -22,11 +22,12 @@ Resources:
       TemplateURL: vpc/subnet/private.yml
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPCID
-  # EC2:
-  #   Type: AWS::CloudFormation::Stack
-  #   Properties:
-  #     TemplateURL: ec2/ec2.yml
-  #     Parameters:
-  #       VPC: !GetAtt VPC.Outputs.VPCID
-  #       KeyName: hogehoge
-  #       Subnet: !GetAtt PublicSubnet.Outputs.SubnetID
+  EC2:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ec2/ec2.yml
+      Parameters:
+        VPC: !GetAtt VPC.Outputs.VPCID
+        # key pair
+        KeyName: test1
+        Subnet: !GetAtt PublicSubnet.Outputs.SubnetID
